@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:decorate="{/layout.html}">
+
+    <head></head>
+    <body>
+        <div layout:fragment="contents">
+            <section class="expenseList">
+                <h2>My expenseList</h2>
+                <a id="add_expense" href="../templates/newexpense.html">Add a new Expense</a>
+                <p th:id="no_expense" th:if="${#lists.isEmpty(expenses)}">You don't have any expenses!</p>
+
+                <div id="expenses" th:unless="${lists.isEmpty(expenses)}">
+                    <table>
+                        <tr>
+                            <th>When</th>
+                            <th>What</th>
+                            <th>Amount Spent</th>
+                            <th>Payments Requested</th>
+                            <th>Payments Received</th>
+                            <th>Nett Expense</th>
+                        </tr>
+                        <tr th:each="expense : ${expenses}">
+                            <td th:id="'date_' + ${expense.id}" th:text="${expense.date}">05/02/2022</td>
+                            <td>
+                                <a  th:id="'payment_request_' + ${expense.id}"
+                                    th:href="@{/paymentrequest(expenseId=${expense.id})}" 
+                                    th:text="${expense.description}">
+                                    Lunch
+                                </a>
+                            </td>
+                            <td th:id="'amount_' + ${expense.id}" th:text="${expense.amount}">300</td>
+                            <td th:id="'request_' + ${expense.id}" th:text="${expense.totalAmountOfPaymentsRequested()}">ZAR 0,00</td>
+                            <td th:id="'received_' + ${expense.id}" th:text="${expense.totalAmountForPaymentsReceived()}">ZAR 0,00</td>
+                            <td th:id="'nett_' + ${expense.id}" th:text="${expense.amountLessPaymentsReceived()}">ZAR 0,00</td>
+                        </tr>
+                        <tr id="total">
+                            <td colspan="5">Total Expenses</td>
+                            <td id="grand_total" th:text="${totalExpenses}">ZAR 0,00</td>
+                        </tr>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </body>
+
+</html>
